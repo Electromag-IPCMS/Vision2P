@@ -15,9 +15,5 @@ sphinx:
 
 python:
   install:
-    - requirements: docs/requirements.txt 
+    - requirements: docs/requirements.txt
     - pip: install --upgrade setuptools wheel cython numpy
-
-commands:
-  - command: python setup.py build_ext --inplace
-    cwd: .
