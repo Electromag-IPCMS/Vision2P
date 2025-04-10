@@ -4,4 +4,4 @@ cython
 numpy
 setuptools
 wheel
-scipy==1.15.1
+scipy==1.13.1
