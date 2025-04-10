@@ -15,7 +15,6 @@ The source code is available under BSD-3-Clause license at https://github.com/El
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-.. automodule:: Vision2P
-   :members:
+   ./usage/installation
+   ./usage/quickstart
