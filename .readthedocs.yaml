@@ -23,6 +23,7 @@ python:
         - wheel
         - cython
         - numpy
-    - method: shell
-      path: .
-      command: python setup.py build_ext --inplace
+
+commands:
+  - command: python setup.py build_ext --inplace
+    cwd: .
