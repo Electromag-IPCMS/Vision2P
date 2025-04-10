@@ -18,10 +18,10 @@ python:
     - method: pip
       path: .
 
+pre_install:
+  - install -y --no-install-recommends python3-dev 
+  - pip install --upgrade setuptools wheel cython numpy 
+
 commands:
   - command: python setup.py build_ext --inplace
     cwd: .
-
-pre_install:
-  - install -y --no-install-recommends python3-dev
-  - pip install --upgrade setuptools wheel cython numpy
