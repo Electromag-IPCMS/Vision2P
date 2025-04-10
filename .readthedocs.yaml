@@ -9,11 +9,9 @@ build:
   tools:
     python: "3.9"
     
-# Build documentation in the "docs/" directory with Sphinx
 sphinx:
-   configuration: docs/conf.py
+  configuration: docs/conf.py
 
-# Install Python dependencies from pyproject.toml (if applicable)
 python:
   install:
-      requirements: docs/requirements.txt
+    - requirements: docs/requirements.txt
