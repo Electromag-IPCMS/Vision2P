@@ -1,8 +1,14 @@
 Installation
 ============
 
-pip install git+https://github.com/Electromag-IPCMS/Vision2P.git
+To install Vision2P using pip, run the following command:
 
-This line may also be needed:
+.. code-block:: bash
 
-pip install --upgrade pip setuptools wheel cython numpy
+   pip install git+https://github.com/Electromag-IPCMS/Vision2P.git
+
+You might also need to ensure you have the following build dependencies installed:
+
+.. code-block:: bash
+
+   pip install --upgrade pip setuptools wheel cython numpy
