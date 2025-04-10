@@ -12,22 +12,5 @@ build:
 python:
   install:
     - requirements: docs/requirements.txt
-    - method: pip
+    - method: setuptools
       path: .
-
-
-  before_install:
-    - sudo apt-get update
-    - sudo apt-get install -y build-essential python3-dev
-
-  install:
-    - pip: 
-        - cython
-        - setuptools
-        - wheel
-
-  post_install:
-    - python setup.py build_ext --inplace
-
-sphinx:
-  configuration: docs/conf.py
