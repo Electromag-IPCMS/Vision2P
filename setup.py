@@ -21,7 +21,8 @@ setup(
     extras_require={
         'docs': [
             'sphinx',
-            'sphinx_rtd_theme',  # or any other doc dependencies
+            'sphinx_rtd_theme',
+            'sphinx.ext.napoleon',
         ]
     },
     ext_modules=cythonize(extensions, language_level="3"),
