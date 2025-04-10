@@ -17,3 +17,11 @@ python:
     - requirements: docs/requirements.txt
     - method: pip
       path: .
+  system_packages: true
+  pre_install:
+    - install -y --no-install-recommends python3-dev  # May be needed for Cython
+    - pip install --upgrade setuptools wheel cython numpy # Ensure Cython and numpy are available
+
+commands:
+  - command: python setup.py build_ext --inplace
+    cwd: .
