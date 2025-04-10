@@ -1,2 +1,5 @@
 sphinx
 sphinx-rtd-theme
+cython
+numpy
+sphinx.ext.napoleon
