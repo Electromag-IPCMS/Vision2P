@@ -12,8 +12,14 @@ build:
 sphinx:
   configuration: docs/conf.py
 
-
 python:
   install:
     - requirements: docs/requirements.txt
-    - pip: install --upgrade setuptools wheel cython numpy
+    - method: pip
+      path: .
+      extra_requirements:
+        - --upgrade
+        - setuptools
+        - wheel
+        - cython
+        - numpy
