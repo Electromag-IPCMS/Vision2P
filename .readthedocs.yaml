@@ -16,5 +16,4 @@ sphinx:
 # Install Python dependencies from pyproject.toml (if applicable)
 python:
   install:
-    - method: pip
       requirements: docs/requirements.txt
