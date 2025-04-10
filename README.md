@@ -10,7 +10,7 @@ It is intended to be compatible with data formats used in some of the most popul
 
 # Installation
 
-pip install git+https://github.com/Electromag-IPCMS/Vision2P.git
+pip install git+`https://github.com/Electromag-IPCMS/Vision2P.git`
 
 This line may also be needed:
 
