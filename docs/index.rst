@@ -14,7 +14,7 @@ The source code is available under BSD-3-Clause license at https://github.com/El
 
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   ./usage/installation
-   ./usage/quickstart
+    ./usage/installation
+    ./usage/quickstart
