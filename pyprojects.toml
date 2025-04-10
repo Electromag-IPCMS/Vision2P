@@ -1,3 +1,7 @@
+[tool.poetry.dev-dependencies]
+sphinx = "^4.0"
+sphinx_rtd_theme = "^1.0"
+
 [build-system]
 requires = [
     "setuptools>=42",
