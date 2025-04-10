@@ -18,3 +18,5 @@ The source code is available under BSD-3-Clause license at https://github.com/El
 
     ./usage/installation
     ./usage/quickstart
+    ./pythondoc/kmeans
+    ./pythondoc/nmf
