@@ -12,7 +12,7 @@ extensions = [
 
 setup(
     name='Vision2P',
-    packages=find_packages(include=['Vision2P']),
+    packages=find_packages(),
     install_requires=[
         'numpy',
         'scipy',
