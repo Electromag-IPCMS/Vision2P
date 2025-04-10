@@ -8,6 +8,11 @@ build:
   os: "ubuntu-22.04"
   tools:
     python: "3.9"
+  system_packages:
+    - python3-dev
+    - gcc  
+  resolve_project_dependencies: true
+  requirements: docs/requirements.txt
   commands:
     - cd $READTHEDOCS_SOURCE_DIR
     - python setup.py build_ext --inplace
