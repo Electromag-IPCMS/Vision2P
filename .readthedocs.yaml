@@ -15,15 +15,3 @@ sphinx:
 python:
   install:
     - requirements: docs/requirements.txt
-    - method: pip
-      path: .
-      extra_requirements:
-        - --upgrade
-        - setuptools
-        - wheel
-        - cython
-        - numpy
-
-commands:
-  - command: python setup.py build_ext --inplace
-    cwd: .
