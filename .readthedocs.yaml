@@ -23,6 +23,5 @@ python:
         - wheel
         - cython
         - numpy
-    - method: pip
-      path: .
+    - method: shell
       command: python setup.py build_ext --inplace
