@@ -18,6 +18,12 @@ setup(
         'scipy',
         'cython'
     ],
+    extras_require={
+        'docs': [
+            'sphinx',
+            'sphinx_rtd_theme',  # or any other doc dependencies
+        ]
+    },
     ext_modules=cythonize(extensions, language_level="3"),
     version='0.1.0',
     description='Spectro-microscopy and polarimetry machine learning library',
