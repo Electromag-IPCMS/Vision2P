@@ -24,4 +24,5 @@ python:
         - cython
         - numpy
     - method: shell
+      path: .
       command: python setup.py build_ext --inplace
