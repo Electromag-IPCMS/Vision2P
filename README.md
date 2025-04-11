@@ -8,8 +8,6 @@ A regularization term has been added to the NMF algorithm to improve the results
 
 It is intended to be compatible with data formats used in some of the most popular Python machine learning packages such as scikit-learn. It retains the same option names to simplify its usage.
 
-Documentation: vision2p.readthedocs.io
-
  ## 📦 Installation
 
 pip install git+`https://github.com/Electromag-IPCMS/Vision2P.git`
