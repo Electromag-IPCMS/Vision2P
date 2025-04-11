@@ -1,5 +1,3 @@
-
-
 project = 'Vision2P'
 author = 'CNRS, CroesBoris, Cherifi-Hertel Salia'
 release = '0.1.0'
