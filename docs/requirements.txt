@@ -1,7 +1,2 @@
 sphinx
 sphinx-rtd-theme
-cython
-numpy
-setuptools
-wheel
-scipy==1.13.1
