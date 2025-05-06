@@ -22,3 +22,5 @@ Check out the full documentation at [vision2p.readthedocs.io](https://vision2p.r
 
 
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
+[![SWH](https://archive.softwareheritage.org/badge/swh:1:dir:f64c7008568147cae0f955dcd3f58964174de923/)](https://archive.softwareheritage.org/swh:1:dir:f64c7008568147cae0f955dcd3f58964174de923;origin=https://github.com/Electromag-IPCMS/Vision2P;visit=swh:1:snp:7387ac80c6c7fe1d123ef7391dcf58f63f0c2145;anchor=swh:1:rev:aa15d971ce752f334acfa8d91af1016556da5ffe)
