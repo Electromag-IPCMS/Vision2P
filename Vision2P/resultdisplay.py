@@ -12,6 +12,8 @@ class DisplayConfig:
     savedir: Optional[str] = None
     map_percent: bool = True
     pxsize: float = 0.1
+    image_shape: Optional[tuple[int, int]] = None
+
 
 @dataclass
 class DecompositionResult:
@@ -29,7 +31,7 @@ class ResultDisplay:
     def __init__(self, config: DisplayConfig):
         self.config = config
 
-    def compare_reconstruction(self, result, image_shape=None):
+    def compare_reconstruction(self, result):
         """
         Compare decomposition reconstruction with original data.
 
@@ -43,11 +45,12 @@ class ResultDisplay:
         
         data = result.data
         reconstructed = result.reconstruction
+        n_pixels = data.shape[0]
+        image_shape = self.config.image_shape
 
         input_sum = np.sum(data, axis=1)
         recon_sum = np.sum(reconstructed, axis=1)
 
-        n_pixels = data.shape[0]
         if image_shape is None:
             side = int(np.sqrt(n_pixels))
             if side * side != n_pixels:
@@ -92,3 +95,59 @@ class ResultDisplay:
         plt.close()
 
         print(f"Saved to: {savepath}")
+
+
+    def plot_decomposition(self, result: DecompositionResult, angles: np.ndarray, image_shape: Optional[tuple] = None):
+        """
+        Visualize NMF results: Spatial contribution maps (W) in the top row 
+        and polar plots of components (H) in the bottom row.
+
+        Parameters
+        ----------
+        result : DecompositionResult
+            Object containing contributions (W) and components (H).
+        angles : np.ndarray
+            Array of angles in radians for the polar plots.
+        image_shape : tuple (ny, nx), optional
+            Shape to reshape the contribution vectors. If None, assumes square.
+        """
+        n_components = result.components.shape[0]
+        n_pixels = result.contributions.shape[0]
+        image_shape = self.config.image_shape
+
+        if image_shape is None:
+            side = int(np.sqrt(n_pixels))
+            image_shape = (side, side)
+
+        fig = plt.figure(figsize=(n_components * 5, 10))
+        plt.rcParams.update({'font.size': 12})
+
+        for i in range(n_components):
+            ax_map = plt.subplot(2, n_components, i + 1)
+            
+            w_map = result.contributions[:, i].reshape(image_shape)
+            
+            im = ax_map.imshow(w_map, cmap=self.config.color_map)
+            ax_map.set_title(f"Contribution {i+1}", fontsize=14)
+            ax_map.axis('off')
+            
+            plt.colorbar(im, ax=ax_map, fraction=0.046, pad=0.04)
+
+            ax_polar = plt.subplot(2, n_components, n_components + i + 1, projection='polar')
+            
+            ax_polar.plot(angles, result.components[i, :], '-o', 
+                         lw=3, ms=5, zorder=1, color='black')
+            
+            ax_polar.set_title(f"Component {i+1} Profile", va='bottom')
+            ax_polar.grid(True)
+
+        plt.tight_layout()
+
+        filename = "nmf_decomposition_analysis.png"
+        save_dir = self.config.savedir or os.getcwd()
+        os.makedirs(save_dir, exist_ok=True)
+        savepath = os.path.join(save_dir, filename)
+
+        plt.savefig(savepath, dpi=300, bbox_inches="tight")
+        print(f"Decomposition plot saved to: {savepath}")
+        plt.show()
