@@ -1,4 +1,5 @@
-# Author: Mathieu Blondel, Tom Dupre la Tour
+# Original authors: Mathieu Blondel, Tom Dupre la Tour (from scikit-learn)
+# Modifications by: Boris Croes and Salia Cherifi-Hertel
 # License: BSD 3 clause
 
 from cython cimport floating
@@ -40,7 +41,7 @@ def _update_cdnmf_fast(floating[:, ::1] W, floating[:, :] HHt,
                 hess = HHt[t, t]
 
                 if FW is not None:
-                    hess += shg_reg * F[i, i]
+                    hess += 2*shg_reg
 
                 if hess != 0:
                     W[i, t] = max(W[i, t] - grad / hess, 0.)
