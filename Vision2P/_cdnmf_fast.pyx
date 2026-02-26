@@ -41,7 +41,7 @@ def _update_cdnmf_fast(floating[:, ::1] W, floating[:, :] HHt,
                 hess = HHt[t, t]
 
                 if FW is not None:
-                    hess += 2*shg_reg
+                    hess += 4*shg_reg
 
                 if hess != 0:
                     W[i, t] = max(W[i, t] - grad / hess, 0.)
