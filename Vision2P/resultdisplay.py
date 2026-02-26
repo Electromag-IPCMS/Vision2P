@@ -127,11 +127,19 @@ class ResultDisplay:
             im = ax_map.imshow(w_map, cmap=self.config.color_map)
             ax_map.axis('off')
             
-            plt.colorbar(im, ax=ax_map, fraction=0.046, pad=0.04)
+            plt.colorbar(im, ax=ax_map, fraction=0.03, pad=0.04)
 
             ax_polar = plt.subplot(2, n_components, n_components + i + 1, projection='polar')
             ax_polar.plot(angles, result.components[i, :], '-o', lw=3, ms=5, zorder=1, color='black')
-            ax_polar.grid(True)
+            max_val = np.max(data_h)
+            if max_val > 0:
+                upper_limit = np.ceil(max_val * 2) / 2 if max_val > 1 else np.ceil(max_val * 10) / 10
+                if upper_limit == max_val: upper_limit += 0.1 
+                
+                ax_polar.set_ylim(0, upper_limit)
+                ax_polar.yaxis.set_major_locator(ticker.LinearLocator(3))
+            
+            ax_polar.tick_params(axis='y', labelsize=10)
 
         plt.tight_layout()
 
