@@ -1,0 +1,16 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+Vision2P/__init__.py
+Vision2P/_cdnmf_fast.c
+Vision2P/_cdnmf_fast.pyx
+Vision2P/_initialize_nmf.py
+Vision2P/kmeans.py
+Vision2P/nmf.py
+Vision2P/resultdisplay.py
+Vision2P.egg-info/PKG-INFO
+Vision2P.egg-info/SOURCES.txt
+Vision2P.egg-info/dependency_links.txt
+Vision2P.egg-info/requires.txt
+Vision2P.egg-info/top_level.txt
