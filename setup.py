@@ -30,5 +30,5 @@ setup(
     description='Spectro-microscopy and polarimetry machine learning library',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    author='CNRS, CroesBoris, Cherifi-Hertel Salia',
+    author='CNRS, Croes Boris, Cherifi-Hertel Salia',
 )
