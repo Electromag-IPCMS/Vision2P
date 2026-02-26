@@ -131,6 +131,7 @@ class ResultDisplay:
 
             ax_polar = plt.subplot(2, n_components, n_components + i + 1, projection='polar')
             ax_polar.plot(angles, result.components[i, :], '-o', lw=3, ms=5, zorder=1, color='black')
+            data_h = result.components[i, :]
             max_val = np.max(data_h)
             if max_val > 0:
                 upper_limit = np.ceil(max_val * 2) / 2 if max_val > 1 else np.ceil(max_val * 10) / 10
