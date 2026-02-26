@@ -3,70 +3,92 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib import ticker
 
+from dataclasses import dataclass
 
-def compare_nmf_reconstruction(data, H, W, image_shape=None, savedir=None):
-    """
-    Compare NMF reconstruction HW with original data.
+@dataclass
+class DisplayConfig:
+    color_map: str = "gnuplot2"
+    savedir: str | None = None
+    map_percent: bool = True
+    pxsize: float = 0.1
 
-    Parameters
-    ----------
-    data : array (n_pixels, n_angles)
-    H : array (n_pixels, r)
-    W : array (r, n_angles)
-    image_shape : tuple (ny, nx), optional
-        If None, assumes square image.
-    savedir : str or None
-        If None, saves in current working directory.
-    """
 
-    reconstructed = H @ W
+@dataclass
+class DecompositionResult:
+    data: np.ndarray
+    contributions: np.ndarray   # (n_samples, r)
+    components: np.ndarray      # (r, n_features)
 
-    input_sum = np.sum(data, axis=1)
-    recon_sum = np.sum(reconstructed, axis=1)
+    @property
+    def reconstruction(self):
+        return self.contributions @ self.components
 
-    n_pixels = data.shape[0]
-    if image_shape is None:
-        side = int(np.sqrt(n_pixels))
-        if side * side != n_pixels:
-            raise ValueError("Image shape not square. Please provide image_shape.")
-        image_shape = (side, side)
 
-    input_map = input_sum.reshape(image_shape)
-    recon_map = recon_sum.reshape(image_shape)
+class ResultDisplay:
 
-    eps = 1e-12
-    denom = np.where(input_map == 0, eps, input_map)
-    error_percent = np.abs((recon_map - input_map) / denom) * 100
+    def __init__(self, config: DisplayConfig):
+        self.config = config
 
-    rmse_per_pixel = np.sqrt(np.mean((reconstructed - data) ** 2, axis=1))
-    rmse_map = rmse_per_pixel.reshape(image_shape)
+    def compare_reconstruction(self, result, image_shape=None):
+        """
+        Compare decomposition reconstruction with original data.
 
-    fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+        Parameters
+        ----------
+        result : DecompositionResult
+            Object containing the data, contributions, and components.
+        image_shape : tuple (ny, nx), optional
+            Shape to reshape the image for display. If None, assumes square.
+        """
+        
+        data = result.data
+        reconstructed = result.reconstruction
 
-    maps = [recon_map, input_map, error_percent, rmse_map]
-    titles = ["Reconstructed", "Input", "Error %", "RMSE"]
-    cmaps = ["gnuplot2", "gnuplot2", "gnuplot2", "gnuplot2"]
+        input_sum = np.sum(data, axis=1)
+        recon_sum = np.sum(reconstructed, axis=1)
 
-    for i in range(4):
-        im = axes[i].imshow(maps[i], cmap=cmaps[i],
-                            vmin=(0 if i >= 2 else None))
-        axes[i].set_title(titles[i], fontsize=14)
-        axes[i].axis("off")
+        n_pixels = data.shape[0]
+        if image_shape is None:
+            side = int(np.sqrt(n_pixels))
+            if side * side != n_pixels:
+                raise ValueError("Image shape not square. Please provide image_shape.")
+            image_shape = (side, side)
 
-        if i >= 2:
-            cbar = plt.colorbar(im, ax=axes[i], fraction=0.046, pad=0.04)
-            cbar.locator = ticker.MaxNLocator(nbins=5)
-            cbar.update_ticks()
+        input_map = input_sum.reshape(image_shape)
+        recon_map = recon_sum.reshape(image_shape)
 
-    plt.tight_layout()
+        eps = 1e-12
+        denom = np.where(input_map == 0, eps, input_map)
+        error_percent = np.abs((recon_map - input_map) / denom) * 100
 
-    if savedir is None:
-        savepath = os.path.join(os.getcwd(), "nmf_reconstruction_error.png")
-    else:
-        os.makedirs(savedir, exist_ok=True)
-        savepath = os.path.join(savedir, "nmf_reconstruction_error.png")
+        rmse_per_pixel = np.sqrt(np.mean((reconstructed - data) ** 2, axis=1))
+        rmse_map = rmse_per_pixel.reshape(image_shape)
 
-    plt.savefig(savepath, dpi=300, bbox_inches="tight")
-    plt.close()
+        fig, axes = plt.subplots(1, 4, figsize=(20, 5))
 
-    print(f"Saved to: {savepath}")
+        maps = [recon_map, input_map, error_percent, rmse_map]
+        titles = ["Reconstructed", "Input", "Error %", "RMSE"]
+
+        for i in range(4):
+            im = axes[i].imshow(maps[i], cmap=self.config.color_map,
+                                vmin=(0 if i >= 2 else None))
+            axes[i].set_title(titles[i], fontsize=14)
+            axes[i].axis("off")
+
+            if i >= 2:
+                cbar = plt.colorbar(im, ax=axes[i], fraction=0.046, pad=0.04)
+                cbar.locator = ticker.MaxNLocator(nbins=5)
+                cbar.update_ticks()
+
+        plt.tight_layout()
+
+        if self.config.savedir is None:
+            savepath = os.path.join(os.getcwd(), "nmf_reconstruction_error.png")
+        else:
+            os.makedirs(self.config.savedir, exist_ok=True)
+            savepath = os.path.join(self.config.savedir, "nmf_reconstruction_error.png")
+
+        plt.savefig(savepath, dpi=300, bbox_inches="tight")
+        plt.close()
+
+        print(f"Saved to: {savepath}")
