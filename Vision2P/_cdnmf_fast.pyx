@@ -28,7 +28,7 @@ def _update_cdnmf_fast(floating[:, ::1] W, floating[:, :] HHt,
                 grad = -XHt[i, t]
 
                 if FW is not None:
-                    grad += shg_reg * FW[i, t]
+                    grad += 2*shg_reg * FW[i, t]
 
                 for r in range(n_components):
                     grad += HHt[t, r] * W[i, r] 
