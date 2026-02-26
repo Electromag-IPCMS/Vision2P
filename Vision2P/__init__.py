@@ -14,3 +14,4 @@ Salia Cherifi-Hertel, IPCMS Strasbourg, 23 rue du Loess,67034 Strasbourg, France
 
 from .kmeans import kmeans
 from .nmf import nmf
+from .resultdisplay import compare_nmf_reconstruction
