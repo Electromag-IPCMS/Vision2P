@@ -4,14 +4,14 @@ import os
 from matplotlib import ticker
 
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class DisplayConfig:
     color_map: str = "gnuplot2"
-    savedir: str | None = None
+    savedir: Optional[str] = None
     map_percent: bool = True
     pxsize: float = 0.1
-
 
 @dataclass
 class DecompositionResult:
