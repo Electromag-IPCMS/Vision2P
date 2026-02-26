@@ -92,9 +92,8 @@ class ResultDisplay:
             savepath = os.path.join(self.config.savedir, "nmf_reconstruction_error.png")
 
         plt.savefig(savepath, dpi=300, bbox_inches="tight")
-        plt.close()
-
         print(f"Saved to: {savepath}")
+        plt.show()
 
 
     def plot_decomposition(self, result: DecompositionResult, angles: np.ndarray, image_shape: Optional[tuple] = None):
@@ -119,26 +118,19 @@ class ResultDisplay:
             side = int(np.sqrt(n_pixels))
             image_shape = (side, side)
 
-        fig = plt.figure(figsize=(n_components * 5, 10))
+        fig = plt.figure(figsize=(n_components * 5, 8))
         plt.rcParams.update({'font.size': 12})
 
         for i in range(n_components):
             ax_map = plt.subplot(2, n_components, i + 1)
-            
             w_map = result.contributions[:, i].reshape(image_shape)
-            
             im = ax_map.imshow(w_map, cmap=self.config.color_map)
-            ax_map.set_title(f"Contribution {i+1}", fontsize=14)
             ax_map.axis('off')
             
             plt.colorbar(im, ax=ax_map, fraction=0.046, pad=0.04)
 
             ax_polar = plt.subplot(2, n_components, n_components + i + 1, projection='polar')
-            
-            ax_polar.plot(angles, result.components[i, :], '-o', 
-                         lw=3, ms=5, zorder=1, color='black')
-            
-            ax_polar.set_title(f"Component {i+1} Profile", va='bottom')
+            ax_polar.plot(angles, result.components[i, :], '-o', lw=3, ms=5, zorder=1, color='black')
             ax_polar.grid(True)
 
         plt.tight_layout()
