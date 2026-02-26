@@ -31,4 +31,13 @@ setup(
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='CNRS, Croes Boris, Cherifi-Hertel Salia',
+    url="https://github.com/Electromag-IPCMS/Vision2P",
+    python_requires=">=3.7",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: BSD-3-Clause",
+        "Operating System :: OS Independent",
+        "Topic :: Scientific/Engineering :: Image Recognition",
+        "Topic :: Scientific/Engineering :: Physics",
+    ],
 )
