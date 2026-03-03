@@ -205,8 +205,8 @@ class ResultDisplay:
             ax = plt.subplot(1, n_components+1, i+2, projection='polar')
             comp_values = W[:, i] * mask
             polar_profile = comp_values.reshape(ny, nx).mean(axis=0)
-            ax.plot(angles, polar_profile, '-o', lw=3, ms=6, color=colors[i])
-            ax.set_title(f"Component {i}", color=colors[i])
+            ax.plot(angles, polar_profile, '-o', lw=3, ms=6, color=clust_colors[i])
+            ax.set_title(f"Component {i}", color=clust_colors[i])
 
         plt.tight_layout()
 
