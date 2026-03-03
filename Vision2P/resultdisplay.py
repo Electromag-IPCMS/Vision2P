@@ -173,7 +173,7 @@ class ResultDisplay:
             Fraction of max total intensity below which pixels are masked
         """
         image_shape = self.config.image_shape
-        n_pixels, n_components = W.shape
+        n_pixels, n_components = H.shape
         clust_colors = []
         clust_colors = [(0,0,0),(1,0,0),(0,0,1),(0,1,0),(1,1,0)] #Black, red, blue, green, yellow, cyan
         cmap = colors.LinearSegmentedColormap.from_list('', clust_colors[:n_components])
@@ -203,7 +203,7 @@ class ResultDisplay:
 
         for i in range(n_components):
             ax = plt.subplot(1, n_components+1, i+2, projection='polar')
-            comp_values = W[:, i] * mask
+            comp_values = H[i, :] * mask
             polar_profile = comp_values.reshape(ny, nx).mean(axis=0)
             ax.plot(angles, polar_profile, '-o', lw=3, ms=6, color=clust_colors[i])
             ax.set_title(f"Component {i}", color=clust_colors[i])
