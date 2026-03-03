@@ -26,7 +26,7 @@ setup(
         ]
     },
     ext_modules=cythonize(extensions, language_level="3"),
-    version='0.2.3',
+    version='0.2.4',
     description='Spectro-microscopy and polarimetry machine learning library',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
