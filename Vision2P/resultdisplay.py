@@ -173,13 +173,13 @@ class ResultDisplay:
             Fraction of max total intensity below which pixels are masked
         """
         image_shape = self.config.image_shape
-
+        n_pixels, n_components = W.shape
         clust_colors = []
         clust_colors = [(0,0,0),(1,0,0),(0,0,1),(0,1,0),(1,1,0)] #Black, red, blue, green, yellow, cyan
         cmap = colors.LinearSegmentedColormap.from_list('', clust_colors[:n_components])
         norm = colors.BoundaryNorm(np.arange(n_components+1), cmap.N)
 
-        n_pixels, n_components = W.shape
+        
         if image_shape is None:
             side = int(np.sqrt(n_pixels))
             if side * side != n_pixels:
