@@ -1,7 +1,9 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 from matplotlib import ticker
+from matplotlib import colors
+from matplotlib.colors import ListedColormap, BoundaryNorm
 
 from dataclasses import dataclass
 from typing import Optional
@@ -152,3 +154,67 @@ class ResultDisplay:
         plt.savefig(savepath, dpi=300, bbox_inches="tight")
         print(f"Decomposition plot saved to: {savepath}")
         plt.show()
+
+
+    def plot_clusters_with_polar(self, W, angles, threshold_ratio=0.0, image_shape: Optional[tuple] = None):
+        """
+        Display dominant cluster map with polar plots of each component.
+        Pixels below threshold are transparent.
+
+        Parameters
+        ----------
+        W : np.ndarray
+            Contribution matrix (n_pixels, n_components)
+        angles : np.ndarray
+            Angles for polar plots (rads)
+        image_shape : tuple, optional
+            Shape of the image (ny, nx). If None, assumes square.
+        threshold_ratio : float
+            Fraction of max total intensity below which pixels are masked
+        """
+        image_shape = self.config.image_shape
+
+        clust_colors = []
+        clust_colors = [(0,0,0),(1,0,0),(0,0,1),(0,1,0),(1,1,0)] #Black, red, blue, green, yellow, cyan
+        cmap = colors.LinearSegmentedColormap.from_list('', clust_colors[:n_components])
+        norm = colors.BoundaryNorm(np.arange(n_components+1), cmap.N)
+
+        n_pixels, n_components = W.shape
+        if image_shape is None:
+            side = int(np.sqrt(n_pixels))
+            if side * side != n_pixels:
+                raise ValueError("Image shape not square. Please provide image_shape.")
+            image_shape = (side, side)
+        ny, nx = image_shape
+
+        pixel_strength = np.sum(W, axis=1)
+        threshold = threshold_ratio * pixel_strength.max()
+        mask = pixel_strength > threshold
+        dominant_component = np.argmax(W, axis=1)
+        dominant_masked = np.ma.masked_where(~mask, dominant_component)
+
+
+        fig = plt.figure(figsize=(5*(n_components+1), 5))
+
+        ax0 = plt.subplot(1, n_components+1, 1)
+        ax0.imshow(dominant_masked.reshape(ny, nx), cmap=cmap, norm=norm)
+        ax0.axis("off")
+        ax0.set_title("Dominant Clusters", fontsize=14)
+
+        for i in range(n_components):
+            ax = plt.subplot(1, n_components+1, i+2, projection='polar')
+            comp_values = W[:, i] * mask
+            polar_profile = comp_values.reshape(ny, nx).mean(axis=0)
+            ax.plot(angles, polar_profile, '-o', lw=3, ms=6, color=colors[i])
+            ax.set_title(f"Component {i}", color=colors[i])
+
+        plt.tight_layout()
+
+        if self.config.savedir is None:
+            savepath = os.path.join(os.getcwd(), "nmf_clusters_polar.png")
+        else:
+            os.makedirs(self.config.savedir, exist_ok=True)
+            savepath = os.path.join(self.config.savedir, "nmf_clusters_polar.png")
+        plt.savefig(savepath, dpi=300, bbox_inches="tight")
+        plt.show()
+        print(f"Saved to: {savepath}")
