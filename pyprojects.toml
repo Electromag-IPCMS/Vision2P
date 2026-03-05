@@ -6,7 +6,6 @@ sphinx_rtd_theme = "^1.0"
 requires = [
     "setuptools>=42",
     "wheel",
-    "cython",
     "numpy"
 ]
 build-backend = "setuptools.build_meta"

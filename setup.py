@@ -1,22 +1,17 @@
 from setuptools import find_packages, setup, Extension
-from Cython.Build import cythonize
-import numpy
+import os
 
-extensions = [
-    Extension(
-        name="Vision2P._cdnmf_fast",
-        sources=["Vision2P/_cdnmf_fast.pyx"],
-        include_dirs=[numpy.get_include()],
-    )
-]
+class get_numpy_include:
+    def __str__(self):
+        import numpy
+        return numpy.get_include()
 
 setup(
     name='Vision2P',
     packages=find_packages(),
     install_requires=[
-        'numpy',
-        'scipy',
-        'cython'
+        'numpy<2.0',
+        'scipy'
     ],
     extras_require={
         'docs': [
@@ -25,14 +20,13 @@ setup(
             'sphinx.ext.napoleon',
         ]
     },
-    ext_modules=cythonize(extensions, language_level="3"),
-    version='0.2.4',
+    version='0.4.0',
     description='Spectro-microscopy and polarimetry machine learning library',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='CNRS, Croes Boris, Cherifi-Hertel Salia',
     url="https://github.com/Electromag-IPCMS/Vision2P",
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: BSD-3-Clause",

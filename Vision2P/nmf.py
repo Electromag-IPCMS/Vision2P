@@ -14,7 +14,6 @@ Salia Cherifi-Hertel, IPCMS Strasbourg, 23 rue du Loess,67034 Strasbourg, France
 
 import warnings
 import numpy as np
-from ._cdnmf_fast import _update_cdnmf_fast
 from ._initialize_nmf import _initialize_nmf, squared_norm
 
 
@@ -175,7 +174,7 @@ def update_cd(X, Ht, W, update_H, update_W, tol, max_iter, polarimetry_reg, n_co
     for i in range(max_iter):
 
         violation = 0.0      
-        if update_W: violation += update_cd_H_W(X, W, Ht, polarimetry_reg, components_to_update_W)
+        if update_W: violation += update_cd_H_W(X, W, Ht, 0, components_to_update_W, F=None)
         if update_H: violation += update_cd_H_W(X.T, Ht, W, polarimetry_reg, components_to_update_H, F=F)
 
         if i == 0:
@@ -193,8 +192,7 @@ def update_cd_H_W(X, W, Ht, polarimetry_reg, components_to_update, F=None):
     XHt = np.dot(X, Ht)
     FW = None if F is None else np.dot(F, W)
 
-    return _update_cdnmf_fast(W, HHt, XHt, components_to_update, FW, F, polarimetry_reg)
-
+    return _update_cd(W, HHt, XHt, components_to_update, FW, F, polarimetry_reg)
 
 
 def update_with_closest_components(H, Hi):
@@ -264,3 +262,28 @@ def frobenius_norm(X):
     return np.sqrt(squared_norm(X))
 
 
+def _update_cd(W, HHt, XHt, permutation, FW, F, shg_reg):
+
+        violation = 0.0
+        n_components = len(permutation)
+        
+        for t in permutation:
+            grad = np.dot(W, HHt[:, t]) - XHt[:, t]
+            
+            if FW is not None:
+                grad += 2 * shg_reg * FW[:, t]
+
+            hess = HHt[t, t]
+            if FW is not None:
+                hess += 4 * shg_reg
+
+            if hess != 0:
+                pg = np.where((W[:, t] == 0), np.minimum(0, grad), grad)
+                violation += np.sum(np.abs(pg))
+
+                W[:, t] = np.maximum(W[:, t] - grad / hess, 0.0)
+                
+                if FW is not None and F is not None:
+                    FW = np.dot(F, W) 
+
+        return violation
