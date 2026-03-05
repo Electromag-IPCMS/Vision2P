@@ -33,7 +33,8 @@ class ResultDisplay:
     def __init__(self, config: DisplayConfig):
         self.config = config
 
-    def compare_reconstruction(self, result):
+
+    def compare_reconstruction(self, result: DecompositionResult):
         """
         Compare decomposition reconstruction with original data.
 
@@ -224,3 +225,29 @@ class ResultDisplay:
             plt.savefig(savepath, dpi=300, bbox_inches="tight")
             print(f"Cluster plot saved to: {savepath}")
             plt.show()
+
+
+    def rearrange_H(self, result: DecompositionResult) -> np.ndarray:
+            """
+            Restore original angular order to H matrix (for polar plots).
+            Works symmetrically with prepare_data_for_constraint.
+            """
+            half = result.component.shape[1] // 2
+            part_a = result.component[:, :half]
+            part_b = result.component[:, half:]
+            result.component = np.hstack([part_a, part_b])
+
+
+    def reconstruct_spatial_map(self, result: DecompositionResult, dataset: Dataset, fill_value=np.nan):
+            """
+            Reconstructs 2D maps from masked NMF components.
+            Returns: np.ndarray (n_components, height, width)
+            """
+            h, w = dataset.spatial_shape
+            n_pixels = h * w
+            n_components = result.contributions.shape[1]
+            W_full = np.full((n_pixels, n_components), fill_value)
+
+            W_full[dataset.mask] = result.contributions
+
+            return W_full.reshape((h, w, n_components)).transpose(2, 0, 1)
