@@ -8,6 +8,8 @@ from matplotlib.colors import ListedColormap, BoundaryNorm
 from dataclasses import dataclass
 from typing import Optional
 
+from processing import Dataset
+
 @dataclass
 class DisplayConfig:
     color_map: str = "gnuplot2"
