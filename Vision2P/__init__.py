@@ -16,3 +16,13 @@ from .kmeans import kmeans
 from .nmf import nmf
 from .resultdisplay import ResultDisplay, DisplayConfig, DecompositionResult
 from .processing import Dataset, DataProcessor
+
+__all__ = [
+    'Dataset', 
+    'DataProcessor', 
+    'ResultDisplay', 
+    'DisplayConfig', 
+    'DecompositionResult',
+    'nmf',
+    'kmeans'
+]
