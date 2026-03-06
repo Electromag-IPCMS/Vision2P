@@ -10,7 +10,7 @@ setup(
     name='Vision2P',
     packages=find_packages(),
     install_requires=[
-        'numpy<2.0',
+        'numpy',
         'scipy'
     ],
     extras_require={
@@ -35,3 +35,4 @@ setup(
         "Topic :: Scientific/Engineering :: Physics",
     ],
 )
+
